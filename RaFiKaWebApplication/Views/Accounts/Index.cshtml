@@ -1,0 +1,80 @@
+﻿@model IEnumerable<RaFiKaWebApplication.Models.Account>
+@using RaFiKaWebApplication.Models;
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Accounts</h2>
+<div class="container no-gutters">
+    <div class="row no-gutters">
+        <div class="col">
+            <div class="row">
+                <span class="mr-2"><b>How many admins in the Website</b> </span>
+                @{
+                    ShopDBContext db = new ShopDBContext();
+                    var users = db.accounts.GroupBy(u => u.isAdminAccount);
+
+                <br/>
+                <br/>
+
+                    foreach (var u in users)
+                    {
+                        <span class="mr-2">
+
+                            @u.Key,
+
+                            <span class="pr-1"></span>
+                            @u.Count(),
+                        </span>
+                    }
+                }
+            </div>
+            <div class="row">
+                <span><b>Total:</b> &nbsp; @db.accounts.Count()</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NameAccount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailAccount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PasswordAccount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isAdminAccount)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PasswordAccount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isAdminAccount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.AccountId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.AccountId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.AccountId })
+            </td>
+        </tr>
+    }
+</table>

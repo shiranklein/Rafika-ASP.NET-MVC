@@ -1,0 +1,102 @@
+﻿@using RaFiKaWebApplication.Models;
+@model IEnumerable<RaFiKaWebApplication.Models.Supplier>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Suppliers</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NameSupplier)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneSupplier)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GoodsSupplier)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NameSupplier)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneSupplier)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GoodsSupplier)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.SupplierId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SupplierId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SupplierId })
+        </td>
+    </tr>
+}
+
+</table>
+
+<br/>
+<br/>
+
+<div class="mt-5">
+    @{
+        ShopDBContext db2 = new ShopDBContext();
+
+
+
+        var productsInnerJoin = from products in db2.products
+                                join suppliers in db2.suppliers
+                                    on products.SupplierId equals suppliers.SupplierId
+                                select new
+                                {
+
+                                    productName = products.NameProduct,
+                                    supplierName = suppliers.NameSupplier
+
+                                };
+    }
+    <br />
+    <h5>
+        List of
+        <span style="color:#FFD166">Products</span>
+        with their
+        <span style="color:#06D6A0">Suppliers</span>
+    </h5>
+    <hr />
+    <div class="card bg-secondary">
+        <table class="table table-borderless">
+            <thead style="background-color: #c5c7d3">
+                <tr>
+                    <th scope="col">#</th>
+                    <th>Product Name</th>
+                    <th>Supplier Name </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                }
+                @foreach (var record in productsInnerJoin.ToList())
+            {
+                    <tr class="text-regular bg-secondary">
+                        <th scope="row">@counter</th>
+                        <td>@record.productName</td>
+                        <td>@record.supplierName</td>
+                    </tr>
+
+                    counter++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

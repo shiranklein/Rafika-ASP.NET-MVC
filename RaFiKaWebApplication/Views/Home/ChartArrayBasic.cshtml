@@ -1,0 +1,27 @@
+﻿@using RaFiKaWebApplication.Models;
+@{
+    ViewBag.Title = "ChartArrayBasic";
+}
+
+<h2>ChartArrayBasic</h2>
+
+
+
+@{
+    ShopDBContext db4 = new ShopDBContext();
+    var a = db4.products.GroupBy(i => 1)
+      .Select(g => new
+      {
+          //Count = g.Count(),
+          //Total = g.Sum(i => i.Paid),
+          Average = g.Average(i => i.SizeProduct)
+      });
+
+    var key = new Chart(width: 600, height: 400)
+     .AddTitle("Product Sales")
+     .DataBindTable(dataSource: a, xField: "Average")
+     .Write();
+
+
+}
+
